@@ -2,11 +2,11 @@ import { PILLARS } from "../data/profile";
 import { Section } from "@/shared/components/layout";
 import { ArrowLink, Kicker, Prose, SectionHeading } from "@/shared/components/ui";
 
-export function PillarsSection() {
+export function PillarsSection({ id = "approach" }: { id?: string }) {
   return (
-    <Section density="tight">
+    <Section id={id} density="tight">
       <SectionHeading size="md" className="mb-9">
-        What I work on
+        How I work
       </SectionHeading>
 
       <div className="grid gap-[clamp(28px,4vw,56px)] [grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))]">

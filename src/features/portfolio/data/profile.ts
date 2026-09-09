@@ -40,6 +40,7 @@ export type SkillGroup = {
 };
 
 export const NAV_ITEMS: NavItem[] = [
+  { href: "#approach", label: "Approach" },
   { href: "#pipeline", label: "Automation" },
   { href: "#cases", label: "Case studies" },
   { href: "#jarvis", label: "AI & retrieval" },
@@ -48,32 +49,32 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const HERO = {
-  kicker: "Cairo, Egypt  ·  Senior Software Engineer",
+  kicker: "Cairo, Egypt  ·  Software Architect & Engineer",
   title: "Ali Mohamed",
-  lede: "I build production products end to end, retrieval systems that understand how documents relate to each other, and automation that keeps a human at every gate.",
-  body: "Four years across enterprise and freelance work, architecting AI products for enterprise clients. Before that, Dell Technologies, where I designed JARVIS, a RAG platform that resolves configuration dependencies naive vector search misses.",
+  lede: "I work out what an organisation actually needs to build, and why. Then I build it.",
+  body: "Four years turning ambiguous enterprise problems into systems that run in production. At Dell the brief was better search; the real problem was that configuration dependencies live between documents, so I designed retrieval around relationships instead. At Ark I architect AI products for enterprise clients, and I set the AI-assisted development practice the company now works in.",
 } as const;
 
 export const PILLARS: Pillar[] = [
   {
-    id: "product",
-    kicker: "Product engineering",
-    title: "End-to-end ownership",
-    body: "Deployed products for enterprise clients and startups, from architecture through delivery. Next.js, React, TypeScript, Node.js, Python, AWS.",
+    id: "diagnosis",
+    kicker: "Diagnosis",
+    title: "Find the real problem first",
+    body: "Most briefs describe a symptom. I work with the people who own the problem to find what is actually constraining them, and I will say so when the thing being asked for is not the thing that helps.",
+    link: { href: "#jarvis", label: "How that went at Dell" },
+  },
+  {
+    id: "architecture",
+    kicker: "Architecture",
+    title: "Decisions I can defend",
+    body: "Retrieval models, service boundaries, where AI belongs and where determinism does, who approves what. Each one is a tradeoff I can explain to an engineer and to the person paying for it.",
     link: { href: "#cases", label: "Case studies" },
   },
   {
-    id: "retrieval",
-    kicker: "AI & retrieval",
-    title: "Retrieval that knows structure",
-    body: "Per-section dynamic chunking plus an identifier-based relationship model, so retrieval traverses connections instead of guessing at similarity.",
-    link: { href: "#jarvis", label: "Try it live" },
-  },
-  {
-    id: "automation",
-    kicker: "Automation & agents",
-    title: "Automation with control",
-    body: "An AI-assisted SDLC pipeline running in production, and always-on RPA workflows. Every phase transition passes a human approval gate.",
+    id: "delivery",
+    kicker: "Delivery",
+    title: "Proven in production",
+    body: "An architecture is worth what ships. Enterprise products delivered end to end on Next.js, TypeScript, Node.js, Python and AWS, plus the practices a team needs to keep running them.",
     link: { href: "#pipeline", label: "Explore the pipeline" },
   },
 ];

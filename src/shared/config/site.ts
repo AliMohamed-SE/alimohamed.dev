@@ -7,12 +7,12 @@ export type SocialLink = {
 
 export const siteConfig = {
   name: "Ali Mohamed",
-  role: "Senior Software Engineer",
-  shortRole: "Sr. Software Engineer",
+  role: "Software Architect & Engineer",
+  shortRole: "Software Architect",
   location: "Cairo, Egypt",
   email: "alimohamed.dev@gmail.com",
   description:
-    "Senior software engineer building production products end to end, retrieval systems that understand how documents relate to each other, and automation that keeps a human at every gate.",
+    "Software architect and engineer in Cairo. I work out what an organisation actually needs to build, and why, then I build it: enterprise AI products, retrieval systems that follow structure, and automation with a human at every gate.",
   url: "https://alimohamed.dev",
 } as const;
 
