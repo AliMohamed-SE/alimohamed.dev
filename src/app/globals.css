@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+/*
+ * Nocturne design system tokens.
+ * Source of truth: the token sheet in the design project's Nocturne bundle.
+ * Every color, radius and shadow used in the app comes from here via Tailwind
+ * utilities (`bg-surface`, `text-accent-300`, `shadow-lg`, ...) so nothing
+ * hard-codes a hex value.
+ */
+@theme {
+  --color-bg: #161826;
+  --color-surface: #232532;
+  --color-text: #e9e9ed;
+  --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
+
+  --color-accent: #9184d9;
+  --color-accent-100: #f5f4ff;
+  --color-accent-200: #e7e5fe;
+  --color-accent-300: #d2cefd;
+  --color-accent-400: #b5abfc;
+  --color-accent-500: #968ae0;
+  --color-accent-600: #796cbf;
+  --color-accent-700: #5d5294;
+  --color-accent-800: #423a6a;
+  --color-accent-900: #2b2741;
+
+  --color-neutral-100: #f3f5fe;
+  --color-neutral-200: #e4e7f5;
+  --color-neutral-300: #cfd3e5;
+  --color-neutral-400: #b2b6ca;
+  --color-neutral-500: #9397ab;
+  --color-neutral-600: #75798c;
+  --color-neutral-700: #595d6c;
+  --color-neutral-800: #3f424d;
+  --color-neutral-900: #292b31;
+
+  --color-section: #262a60;
+  --color-section-glow: #353b80;
+  --color-section-ghost: #4c5397;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-chakra-petch), var(--font-inter), sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  --shadow-sm: 0 0 0 1px #3f424d;
+  --shadow-md: 0 0 0 1px #595d6c, 0 6px 18px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 0 0 1px #9397ab, 0 16px 40px rgba(0, 0, 0, 0.65);
+
+  --animate-rise: rise 480ms ease both;
+  /* The first-paint entrance: a longer, softer version of the same move. */
+  --animate-enter: enter 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pulse-slow: pulse-soft 2.4s ease-in-out infinite;
+  --animate-pulse-fast: pulse-soft 1.2s ease-in-out infinite;
+
+  --ease-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+}
+
+/*
+ * The reduced-motion stand-in for every entrance in the system. It lives out
+ * here rather than in `@theme` because keyframes declared in there are only
+ * emitted when their paired `--animate-*` utility is used in the source, and
+ * this one is reached solely through a media query.
+ */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@layer components {
+  /*
+   * The scroll entrance. Both states are CSS keyed on data attributes rather
+   * than classes toggled from React, because the hidden state has to be in the
+   * server's HTML: an effect runs after the first paint, so applying it there
+   * would fade already-visible content out before it could fade in.
+   *
+   * Only `opacity` and `translate` move, never `display` or a height, so the
+   * page's layout is identical hidden or shown — anchor offsets and scroll
+   * restoration land in the same place either way.
+   */
+  [data-reveal] {
+    opacity: 0;
+    translate: 0 12px;
+    transition:
+      opacity 700ms var(--ease-spring),
+      translate 700ms var(--ease-spring);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal][data-shown] {
+    opacity: 1;
+    translate: none;
+  }
+
+  /* Has to be in this layer, after the rule it overrides: the layer order is
+     `base` then `components`, so the same override sitting with the rest of
+     the reduced-motion block below would lose to the movement above. */
+  @media (prefers-reduced-motion: reduce) {
+    /* The stagger stays — it reads well over a fade — but the lift goes. */
+    [data-reveal] {
+      translate: none;
+      transition-duration: 240ms;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Anchor targets stop below the sticky header rather than under it. Set on
+       the scroll container so it applies to every target once — pairing this
+       with `scroll-margin-top` on the targets would offset them twice. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The system never bolds headings past 500 — hierarchy is size and space. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /*
+   * Reduce the motion; do not remove it. A cross-fade is not what the
+   * preference is asking about, so every entrance keeps its fade and loses its
+   * movement, and the reveal order of the page is unchanged. What does stop is
+   * anything that loops or plays without being asked.
+   *
+   * Redefining the tokens is enough to reach every consumer: `animate-enter`
+   * compiles to `animation: var(--animate-enter)`, so there is no specificity
+   * to fight and nothing needs `!important`. `@layer base` resolves after the
+   * `theme` layer that `@theme` emits into, so these win.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    :root {
+      --animate-enter: fade-in 240ms ease both;
+      --animate-rise: fade-in 200ms ease both;
+      --animate-pulse-slow: none;
+      --animate-pulse-fast: none;
+    }
+  }
+}
